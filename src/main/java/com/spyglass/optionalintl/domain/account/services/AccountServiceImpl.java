@@ -1,9 +1,9 @@
-package com.spyglass.optionalintl.domain.accountmanager.services;
+package com.spyglass.optionalintl.domain.account.services;
 
 
-import com.spyglass.optionalintl.domain.accountmanager.exception.AccountNotFoundException;
-import com.spyglass.optionalintl.domain.accountmanager.model.Account;
-import com.spyglass.optionalintl.domain.accountmanager.repo.AccountRepo;
+import com.spyglass.optionalintl.domain.account.exception.AccountNotFoundException;
+import com.spyglass.optionalintl.domain.account.model.Account;
+import com.spyglass.optionalintl.domain.account.repo.AccountRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
