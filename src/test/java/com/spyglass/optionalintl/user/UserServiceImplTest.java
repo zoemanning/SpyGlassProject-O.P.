@@ -52,10 +52,28 @@ public class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("Find user by Id - Success")
+    @DisplayName("Find User by Id - Success")
     public void findUserByIdSuccess() throws UserNotFoundException {
         BDDMockito.doReturn(Optional.of(outputUser)).when(mockUserRepo).findById(1L);
         User foundUser = userService.findById(1L);
         Assertions.assertEquals(outputUser.toString(), foundUser.toString());
+    }
+
+    @Test
+    @DisplayName("Find User by Id - Fail")
+    public void findUserByIdFail(){
+        BDDMockito.doReturn(Optional.of(outputUser)).when(mockUserRepo).findById(1L);
+        Assertions.assertThrows(UserNotFoundException.class, () ->{
+            userService.findById(1L);
+        });
+    }
+
+    @Test
+    @DisplayName("Delete User - Success")
+    public void deleteUserSuccess(){
+        BDDMockito.doReturn(Optional.empty()).when(mockUserRepo).findById(1L);
+        Assertions.assertThrows(UserNotFoundException.class, ()-> {
+            BDDMockito.doReturn(userService.findById(1L));
+        });
     }
 }

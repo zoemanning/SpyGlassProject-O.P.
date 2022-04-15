@@ -23,7 +23,6 @@ public class GoalServiceImpl implements GoalService {
         this.goalRepo = goalRepo;
     }
 
-
     @Override
     public Goal create(Goal goal) {
         return goalRepo.save(goal);
