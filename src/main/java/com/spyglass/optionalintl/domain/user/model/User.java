@@ -1,10 +1,10 @@
 package com.spyglass.optionalintl.domain.user.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.spyglass.optionalintl.domain.goal.model.Goal;
+
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Entity
 public class User {
@@ -17,6 +17,9 @@ public class User {
     private String lastName;
     private SimpleDateFormat dateOfBirth;
     private String emailAddress;
+    @OneToMany(targetEntity = Goal.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private List<Goal> goalsList;
 
 
     public User() {
@@ -27,6 +30,15 @@ public class User {
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
+    }
+
+    public User(Long id, String firstName, String lastName, SimpleDateFormat dateOfBirth, String emailAddress, List<Goal> goalsList) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.emailAddress = emailAddress;
+        this.goalsList = goalsList;
     }
 
     public Long getId() {
@@ -67,6 +79,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Goal> getGoalsList() {
+        return goalsList;
+    }
+
+    public void setGoalsList(List<Goal> goalsList) {
+        this.goalsList = goalsList;
     }
 
     @Override

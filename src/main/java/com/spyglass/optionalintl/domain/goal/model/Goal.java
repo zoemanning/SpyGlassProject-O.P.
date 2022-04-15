@@ -10,7 +10,6 @@ import java.util.Date;
 public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private Long id;
     private String title;
     private Double targetSavingsAmount;

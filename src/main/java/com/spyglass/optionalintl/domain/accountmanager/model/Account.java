@@ -12,8 +12,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private List<User> usersList;
-    private List<Goal> goalsList;
+
     private Integer accountNumber;
     private String description;
     private String name;
@@ -26,22 +25,6 @@ public class Account {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<User> getUsersList() {
-        return usersList;
-    }
-
-    public void setUsersList(List<User> usersList) {
-        this.usersList = usersList;
-    }
-
-    public List<Goal> getGoalsList() {
-        return goalsList;
-    }
-
-    public void setGoalsList(List<Goal> goalsList) {
-        this.goalsList = goalsList;
     }
 
     public Integer getAccountNumber() {
@@ -72,8 +55,6 @@ public class Account {
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", usersList=" + usersList +
-                ", goalsList=" + goalsList +
                 ", accountNumber=" + accountNumber +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
