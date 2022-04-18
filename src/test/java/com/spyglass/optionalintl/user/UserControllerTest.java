@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.spyglass.optionalintl.BaseControllerTest.asJsonString;
@@ -54,18 +55,22 @@ public class UserControllerTest {
     public void setUp() throws ParseException {
 
         SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
+        dateOfBirth01.parse("04/18/1995");
         SimpleDateFormat dateOfBirth02 = new SimpleDateFormat("MM/DD/YYY");
+        SimpleDateFormat targetDate = new SimpleDateFormat("MM/DD/YYY");
+        targetDate.parse("02/22/2028");
+
 
         List<Goal> goals = new ArrayList<>();
-        goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("04/18/1999"), "notes", 17.0, goalType.VACATION_GOAL));
-        goals.add(new Goal("Down payment for house",25000.00,4375.60,dateOfBirth02.parse("07/04/2022"),"notes",17.5,goalType.PERSONAL_GOAL));
+        goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
+        goals.add(new Goal("Down payment for house",25000.00,4375.60,targetDate,"notes",goalType.PERSONAL_GOAL));
 
         inputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
 
         mockUserResponse01 = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
         mockUserResponse01.setId(1L);
 
-        mockUserResponse02 = new User("Irlanda", "Manning", dateOfBirth02, "zoe@gmail.com");
+        mockUserResponse02 = new User("Irlanda", "Manning", dateOfBirth02, "irlanda@gmail.com");
         mockUserResponse02.setId(2L);
 
     }
@@ -75,13 +80,12 @@ public class UserControllerTest {
     public void createUserResponse() throws Exception {
         BDDMockito.doReturn(mockUserResponse01).when(userService).create(any());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/widgets")
+        mockMvc.perform(MockMvcRequestBuilders.post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(inputUser)))
 
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Is.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", Is.is("Zoe")));
     }
 
@@ -90,18 +94,38 @@ public class UserControllerTest {
     public void getUserByIdTestSuccess() throws Exception {
         BDDMockito.doReturn(mockUserResponse01).when(userService).findById(1L);
 
-        mockMvc.perform(get("/widgets/{id}", 1))
+        mockMvc.perform(get("/user/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(1)))
+//                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.firstName", is("Zoe")));
+    }
+
+    @Test
+    @DisplayName("Get/user/emailAddress - Success")
+    public void getUserByEmailAddress() throws Exception {
+        BDDMockito.doReturn(mockUserResponse02).when(userService).findById(2L);
+        mockMvc.perform(get("/user/{id}", 2L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.emailAddress", is(mockUserResponse02.getEmailAddress())));
+    }
+
+    @Test
+    @DisplayName("Get/user/lastName - Success")
+    public void getUserByLastName() throws Exception {
+        BDDMockito.doReturn(mockUserResponse02).when(userService).findById(2L);
+        mockMvc.perform(get("/user/{id}", 2L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.lastName", is(mockUserResponse02.getLastName())));
     }
 
     @Test
     @DisplayName("DELETE /user/1 - Success")
     public void deleteUserTestNotSuccess() throws Exception{
         BDDMockito.doReturn(true).when(userService).delete(any());
-        mockMvc.perform(delete("/widgets/{id}", 1))
+        mockMvc.perform(delete("/user/{id}", 1))
                 .andExpect(status().isNoContent());
     }
 
@@ -109,7 +133,7 @@ public class UserControllerTest {
     @DisplayName("DELETE /user/1 - Not Found")
     public void deleteUserTestNotFound() throws Exception{
         BDDMockito.doThrow(new UserNotFoundException("Not Found")).when(userService).delete(any());
-        mockMvc.perform(delete("/user/{id}", 1))
+        mockMvc.perform(delete("/user/{id}", 1L))
                 .andExpect(status().isNotFound());
     }
 

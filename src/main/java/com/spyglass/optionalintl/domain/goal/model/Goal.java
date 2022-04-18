@@ -1,11 +1,12 @@
 package com.spyglass.optionalintl.domain.goal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.spyglass.optionalintl.domain.user.model.User;
+
 
 import javax.persistence.*;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+
 
 @Entity
 @JsonIgnoreProperties({"progressPercentage", "progressAmount"})
@@ -17,7 +18,7 @@ public class Goal {
     private String title;
     private Double targetSavingsAmount;
     private Double amountSaved;
-    private Date savingsDateGoal;
+    private SimpleDateFormat savingsDateGoal;
     private String notes;
     private goalType goalType;
     private Double progressPercentage;
@@ -30,7 +31,7 @@ public class Goal {
     }
 
     public Goal(String title, Double targetSavingsAmount, Double amountSaved,
-                Date savingsDateGoal, String notes, goalType goalType) {
+                SimpleDateFormat savingsDateGoal, String notes, goalType goalType) {
 
         this.title = title;
         this.targetSavingsAmount = targetSavingsAmount;
@@ -80,11 +81,11 @@ public class Goal {
         this.amountSaved = amountSaved;
     }
 
-    public Date getSavingsDateGoal() {
+    public SimpleDateFormat getSavingsDateGoal() {
         return savingsDateGoal;
     }
 
-    public void setSavingsDateGoal(Date savingsDateGoal) {
+    public void setSavingsDateGoal(SimpleDateFormat savingsDateGoal) {
         this.savingsDateGoal = savingsDateGoal;
     }
 

@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("user")
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class UserController {
 
     private UserService userService;
-    private UserRepo userRepo;
+
 
     @Autowired
     public UserController(UserService userService) throws UserNotFoundException {
