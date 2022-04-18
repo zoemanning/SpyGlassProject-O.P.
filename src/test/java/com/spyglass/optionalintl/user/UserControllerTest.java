@@ -1,6 +1,5 @@
 package com.spyglass.optionalintl.user;
 
-
 import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.model.goalType;
 import com.spyglass.optionalintl.domain.user.exception.UserNotFoundException;
@@ -54,13 +53,10 @@ public class UserControllerTest {
     @BeforeEach
     public void setUp() throws ParseException {
 
-        SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYYY");
-        dateOfBirth01.parse("04/18/1995");
-        SimpleDateFormat dateOfBirth02 = new SimpleDateFormat("MM/DD/YYYY");
-        dateOfBirth02.parse("01/07/2000");
-        SimpleDateFormat targetDate = new SimpleDateFormat("MM/DD/YYYY");
-        targetDate.parse("02/22/2028");
-
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YYYY");
+        Date dateOfBirth01 = formatter.parse("04/18/1995");
+        Date dateOfBirth02 = formatter.parse("01/07/2000");
+        Date targetDate = formatter.parse("02/22/2028");
 
         List<Goal> goals = new ArrayList<>();
         goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
