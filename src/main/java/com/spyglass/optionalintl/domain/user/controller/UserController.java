@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("user")
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class UserController {
 
     private UserService userService;
-    private UserRepo userRepo;
+
 
     @Autowired
     public UserController(UserService userService) throws UserNotFoundException {
@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllWidgets() throws UserNotFoundException {
-        Iterable<User> widgets = userService.findAll();
+        List<User> widgets = userService.findAll();
         ResponseEntity<List<User>> response = new ResponseEntity(widgets, HttpStatus.OK);
         return response;
     }

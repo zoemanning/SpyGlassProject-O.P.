@@ -22,6 +22,9 @@ public class UserTest {
 
         SimpleDateFormat savingsDateGoal = new SimpleDateFormat("MM/DD/YYYY");
 //        userOne = new User("Zoe", "Manning", savingsDateGoal.parse("06/14/2023"), "zoe@gmail.com");
+        userOne.setId(1L);
+
+//        userTwo = new User("DJ", "Cottingham", )
     }
 
 }
