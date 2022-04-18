@@ -67,6 +67,7 @@ public class UserControllerTest {
         goals.add(new Goal("Down payment for house",25000.00,4375.60,dateOfBirth02.parse("07/04/2022"),"notes",goalType.PERSONAL_GOAL));
 
 
+
         inputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
 
         mockUserResponse01 = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
