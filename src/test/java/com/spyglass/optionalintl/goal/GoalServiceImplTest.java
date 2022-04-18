@@ -96,7 +96,6 @@ public class GoalServiceImplTest {
         Assertions.assertEquals(input.toString(),foundGoal.toString());
     }
 
-
     @Test
     @DisplayName("Find goal by Id - success")
     public void findByIdTest01() throws GoalNotFoundException {
