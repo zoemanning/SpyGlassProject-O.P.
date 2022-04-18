@@ -1,36 +1,47 @@
 package com.spyglass.optionalintl.domain.goal.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.spyglass.optionalintl.domain.user.model.User;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@JsonIgnoreProperties({"progressPercentage", "progressAmount"})
 public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
     private String title;
     private Double targetSavingsAmount;
     private Double amountSaved;
     private Date savingsDateGoal;
     private String notes;
-    private Double progressBar;
     private goalType goalType;
+    private Double progressPercentage;
+    private Double progressAmount;
+
+
 
 
     public Goal() {
     }
 
-    public Goal(String title, Double targetSavingsAmount, Double amountSaved,
-                Date savingsDateGoal, String notes, Double progressBar, goalType goalType) {
+    public Goal(User user, String title, Double targetSavingsAmount, Double amountSaved,
+                Date savingsDateGoal, String notes, goalType goalType) {
+        this.user = user;
         this.title = title;
         this.targetSavingsAmount = targetSavingsAmount;
         this.amountSaved = amountSaved;
         this.savingsDateGoal = savingsDateGoal;
         this.notes = notes;
-        this.progressBar = progressBar;
         this.goalType = goalType;
     }
 
@@ -56,6 +67,14 @@ public class Goal {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Double getTargetSavingsAmount() {
@@ -90,12 +109,20 @@ public class Goal {
         this.notes = notes;
     }
 
-    public Double getProgressBar() {
-        return progressBar;
+    public Double getProgressPercentage() {
+        return progressPercentage;
     }
 
-    public void setProgressBar(Double progressBar) {
-        this.progressBar = progressBar;
+    public void setProgressPercentage(Double progressPercentage) {
+        this.progressPercentage = progressPercentage;
+    }
+
+    public Double getProgressAmount() {
+        return progressAmount;
+    }
+
+    public void setProgressAmount(Double progressAmount) {
+        this.progressAmount = progressAmount;
     }
 
     @Override
@@ -109,7 +136,6 @@ public class Goal {
                 ", amountSaved=" + amountSaved +
                 ", savingsDateGoal=" + savingsDateGoal +
                 ", notes='" + notes + '\'' +
-                ", progressBar=" + progressBar +
                 ", goalType=" + goalType +
                 '}';
     }
