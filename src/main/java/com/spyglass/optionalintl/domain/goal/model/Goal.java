@@ -2,11 +2,9 @@ package com.spyglass.optionalintl.domain.goal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.spyglass.optionalintl.domain.user.model.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -15,6 +13,7 @@ public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String title;
     private Double targetSavingsAmount;
     private Double amountSaved;
@@ -25,11 +24,14 @@ public class Goal {
     private Double progressAmount;
 
 
+
+
     public Goal() {
     }
 
     public Goal(String title, Double targetSavingsAmount, Double amountSaved,
                 Date savingsDateGoal, String notes, goalType goalType) {
+
         this.title = title;
         this.targetSavingsAmount = targetSavingsAmount;
         this.amountSaved = amountSaved;

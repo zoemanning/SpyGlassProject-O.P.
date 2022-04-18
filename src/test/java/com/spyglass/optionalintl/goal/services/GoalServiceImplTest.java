@@ -1,10 +1,11 @@
-package com.spyglass.optionalintl.goal;
+package com.spyglass.optionalintl.goal.services;
 
 import com.spyglass.optionalintl.domain.goal.exception.GoalNotFoundException;
 import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.model.goalType;
 import com.spyglass.optionalintl.domain.goal.repo.GoalRepo;
 import com.spyglass.optionalintl.domain.goal.services.GoalService;
+import com.spyglass.optionalintl.domain.user.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,10 +36,12 @@ public class GoalServiceImplTest {
 
     private Goal input;
     private Goal output;
+    private User user;
 
     @BeforeEach
     public void setUp() throws ParseException {
         SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
+
 
         input = new Goal("Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
         output = new Goal("Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "note", goalType.VACATION_GOAL);
@@ -134,6 +137,7 @@ public class GoalServiceImplTest {
        });
     }
 
+
     @Test
     @DisplayName("Delete Goal")
     public void deleteGoalTest01() {
@@ -177,15 +181,8 @@ public class GoalServiceImplTest {
         Assertions.assertEquals(expected,actual);
     }
 
-    @Test
-    @DisplayName("Calculate progress")
-    public void getMilestoneMessageTest01() throws ParseException {
-        SimpleDateFormat targetSavingDate01 = new SimpleDateFormat("MM/DD/YYY");
-        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 1000.00, 250.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
-        BDDMockito.doReturn(output).when(goalRepo).save(ArgumentMatchers.any());
-        String expectedMessage = "Congratulations you are 75% away from your goal";
-        String actualMessage = goalService.milestoneMessage(expectedGoalUpdate);
-    }
+
+
 
 }
 

@@ -27,6 +27,7 @@ public class GoalServiceImpl implements GoalService {
     @Override
     public Goal create(Goal goal) {
         calculatePercentage(goal);
+        milestoneMessage(goal);
         return goalRepo.save(goal);
     }
 
@@ -58,8 +59,11 @@ public class GoalServiceImpl implements GoalService {
     public Goal update(Goal goal) throws GoalNotFoundException {
         Long id = goal.getId();
         Optional<Goal> goalExistOption = goalRepo.findById(id);
-        if (goalExistOption.isEmpty())
-            throw new GoalNotFoundException("Goal not found");
+        if (goalExistOption.isEmpty()) {
+            throw new GoalNotFoundException("Goal not found");}
+        Goal updatedGoal = goalExistOption.get();
+        calculatePercentage(updatedGoal);
+        milestoneMessage(updatedGoal);
         return goalRepo.save(goal);
     }
 
@@ -90,8 +94,7 @@ public class GoalServiceImpl implements GoalService {
 
     }
 
-    @Override
-    public String milestoneMessage(Goal goal) {
+    private static String milestoneMessage(Goal goal) {
         String message = "";
         Double amountSaved = goal.getAmountSaved();
         Double targetSavingsAmount = goal.getTargetSavingsAmount();

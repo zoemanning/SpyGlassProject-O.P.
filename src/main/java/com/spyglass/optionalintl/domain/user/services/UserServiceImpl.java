@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,16 +37,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Iterable<User> findAll() throws UserNotFoundException{
-        return userRepo.findAll();
+    public List<User> findAll() throws UserNotFoundException{
+        return (List) userRepo.findAll();
     }
 
     @Override
-    public void delete(Long id) throws UserNotFoundException{
+    public Boolean delete(Long id) throws UserNotFoundException{
         Optional<User> userOptional = userRepo.findById(id);
         if(userOptional.isEmpty())
             throw  new UserNotFoundException("User not found");
         User userToRemove = userOptional.get();
         userRepo.delete(userToRemove);
+
+        return true;
     }
 }
