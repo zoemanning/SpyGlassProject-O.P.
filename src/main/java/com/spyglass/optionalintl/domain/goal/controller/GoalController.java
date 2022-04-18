@@ -5,15 +5,19 @@ import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.services.GoalService;
 import com.spyglass.optionalintl.domain.user.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("goal")
+@RequestMapping("/goal")
 @Slf4j
 public class GoalController {
+
+    private final Logger logger = LoggerFactory.getLogger(GoalController.class);
 
     private GoalService goalService;
 
@@ -22,7 +26,7 @@ public class GoalController {
         this.goalService = goalService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<Iterable<Goal>> getAll() throws GoalNotFoundException {
         Iterable<Goal> all = goalService.findAll();
         return new ResponseEntity<>(all, HttpStatus.OK);

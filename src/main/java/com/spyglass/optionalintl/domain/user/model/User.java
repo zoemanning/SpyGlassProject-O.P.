@@ -5,6 +5,7 @@ import com.spyglass.optionalintl.domain.goal.model.Goal;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class User {
@@ -88,6 +89,20 @@ public class User {
     public void setGoalsList(List<Goal> goalsList) {
         this.goalsList = goalsList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(firstName, user.firstName) && Objects.equals(goalsList, user.goalsList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, goalsList);
+    }
+
 
     @Override
     public String toString() {
