@@ -54,10 +54,11 @@ public class UserControllerTest {
     @BeforeEach
     public void setUp() throws ParseException {
 
-        SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
+        SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYYY");
         dateOfBirth01.parse("04/18/1995");
-        SimpleDateFormat dateOfBirth02 = new SimpleDateFormat("MM/DD/YYY");
-        SimpleDateFormat targetDate = new SimpleDateFormat("MM/DD/YYY");
+        SimpleDateFormat dateOfBirth02 = new SimpleDateFormat("MM/DD/YYYY");
+        dateOfBirth02.parse("01/07/2000");
+        SimpleDateFormat targetDate = new SimpleDateFormat("MM/DD/YYYY");
         targetDate.parse("02/22/2028");
 
 
