@@ -40,8 +40,8 @@ public class GoalServiceImplTest {
     public void setUp() throws ParseException {
         SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
 
-        input = new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", 17.0, goalType.VACATION_GOAL);
-        output = new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", 17.0, goalType.VACATION_GOAL);
+        input = new Goal("Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        output = new Goal("Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "note", goalType.VACATION_GOAL);
         output.setId(1l);
         output.setTitle("Going to Hawaii");
 
@@ -57,9 +57,81 @@ public class GoalServiceImplTest {
     }
 
     @Test
-    @DisplayName("Update Goal")
-    public void updateGoalTest01() throws GoalNotFoundException {
+    @DisplayName("Find goal  by title - success")
+    public void findByTitleTest01() throws GoalNotFoundException {
 
+        BDDMockito.doReturn(Optional.of(input)).when(goalRepo).findByTitle("Going to Hawaii");
+        Goal foundGoal = goalService.findByTitle("Going to Hawaii");
+        Assertions.assertEquals(input.toString(),foundGoal.toString());
+    }
+
+    @Test
+    @DisplayName("Find goal by Id - success")
+    public void findByIdTest02() throws GoalNotFoundException {
+
+        BDDMockito.doReturn(Optional.of(output)).when(goalRepo).findById(1l);
+        Goal foundGoal = goalService.findById(1l);
+        Assertions.assertEquals(output.toString(),foundGoal.toString());
+    }
+
+    @Test
+    @DisplayName("Find goal by Goal Type - success")
+    public void findByIdTest03() throws GoalNotFoundException {
+
+        BDDMockito.doReturn(Optional.of(output)).when(goalRepo).findByGoalType(goalType.VACATION_GOAL);
+        Goal foundGoal = goalService.findByGoalType(goalType.VACATION_GOAL);
+        Assertions.assertEquals(output.toString(),foundGoal.toString());
+    }
+
+    @Test
+    @DisplayName("Find goal by Id - Fail")
+    public void findByIdTest01Failed(){
+        BDDMockito.doReturn(Optional.empty()).when(goalRepo).findById(1L);
+        Assertions.assertThrows(GoalNotFoundException.class, () ->{
+            goalService.findById(1L);
+        });
+    }
+
+    @Test
+    @DisplayName("Find goal by title - Fail")
+    public void findByIdTest02Failed(){
+        BDDMockito.doReturn(Optional.empty()).when(goalRepo).findByTitle("Going to Hawaii");
+        Assertions.assertThrows(GoalNotFoundException.class, () -> {
+            goalService.findByTitle("Going to Hawaii");
+        });
+    }
+
+    @Test
+    @DisplayName("Find goal by goal type - Fail")
+    public void findByIdTest03Failed(){
+        BDDMockito.doReturn(Optional.empty()).when(goalRepo).findByGoalType(goalType.VACATION_GOAL);
+        Assertions.assertThrows(GoalNotFoundException.class, () -> {
+            goalService.findByGoalType(goalType.VACATION_GOAL);
+        });
+    }
+
+    @Test
+    @DisplayName("Update Goal - Success")
+    public void updateGoalTest01() throws GoalNotFoundException, ParseException {
+        SimpleDateFormat targetSavingDate01 = new SimpleDateFormat("MM/DD/YYY");
+        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        expectedGoalUpdate.setId(1L);
+        BDDMockito.doReturn(Optional.of(input)).when(goalRepo).findById(1L);
+        BDDMockito.doReturn(expectedGoalUpdate).when(goalRepo).save(ArgumentMatchers.any());
+        Goal actualGoal = goalService.update(expectedGoalUpdate);
+        Assertions.assertEquals(expectedGoalUpdate.toString(), actualGoal.toString());
+    }
+
+    @Test
+    @DisplayName("Goal Service: Update Goal - Fail")
+    public void updateGoalTestFail() throws ParseException {
+        SimpleDateFormat targetSavingDate01 = new SimpleDateFormat("MM/DD/YYY");
+        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+       expectedGoalUpdate.setId(1L);
+       BDDMockito.doReturn(Optional.empty()).when(goalRepo).findById(1L);
+       Assertions.assertThrows(GoalNotFoundException.class, ()-> {
+           goalService.update(expectedGoalUpdate);
+       });
     }
 
     @Test
@@ -81,29 +153,40 @@ public class GoalServiceImplTest {
         });
     }
 
+    @Test
+    @DisplayName("Calculate Progress Test - Success")
+    public void calculateProgressBarTestSuccess01(){
+        BDDMockito.doReturn(input).when(goalRepo).save(ArgumentMatchers.any());
+        Goal createdGoal = goalService.create(input);
+        Assertions.assertNotNull(createdGoal);
+
+        Double expected = 20.00;
+        Double actual = createdGoal.getProgressPercentage();
+        Assertions.assertEquals(expected,actual);
+    }
+
+    @Test
+    @DisplayName("Calculate Progress (Amount left) Test - Success")
+    public void calculateProgressBarTestSuccess02(){
+        BDDMockito.doReturn(input).when(goalRepo).save(ArgumentMatchers.any());
+        Goal createdGoal = goalService.create(input);
+        Assertions.assertNotNull(createdGoal);
+
+        Double expected = 2400.00;
+        Double actual = createdGoal.getProgressAmount();
+        Assertions.assertEquals(expected,actual);
+    }
 
     @Test
     @DisplayName("Calculate progress")
-    public void calculatePercentageTest01() {
-
-    }
-    @Test
-    @DisplayName("Find goal  by title - success")
-    public void findByTitleTest01() throws GoalNotFoundException {
-
-        BDDMockito.doReturn(Optional.of(input)).when(goalRepo).findByTitle("Going to Hawaii");
-        Goal foundGoal = goalService.findByTitle("Going to Hawaii");
-        Assertions.assertEquals(input.toString(),foundGoal.toString());
+    public void getMilestoneMessageTest01() throws ParseException {
+        SimpleDateFormat targetSavingDate01 = new SimpleDateFormat("MM/DD/YYY");
+        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 1000.00, 250.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        BDDMockito.doReturn(output).when(goalRepo).save(ArgumentMatchers.any());
+        String expectedMessage = "Congratulations you are 75% away from your goal";
+        String actualMessage = goalService.milestoneMessage(expectedGoalUpdate);
     }
 
-    @Test
-    @DisplayName("Find goal by Id - success")
-    public void findByIdTest01() throws GoalNotFoundException {
-
-        BDDMockito.doReturn(Optional.of(output)).when(goalRepo).findById(1l);
-        Goal foundGoal = goalService.findById(1l);
-        Assertions.assertEquals(output.toString(),foundGoal.toString());
-    }
 }
 
 

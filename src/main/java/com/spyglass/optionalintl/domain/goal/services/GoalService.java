@@ -2,6 +2,7 @@ package com.spyglass.optionalintl.domain.goal.services;
 
 import com.spyglass.optionalintl.domain.goal.exception.GoalNotFoundException;
 import com.spyglass.optionalintl.domain.goal.model.Goal;
+import com.spyglass.optionalintl.domain.goal.model.goalType;
 
 
 public interface GoalService {
@@ -10,7 +11,7 @@ public interface GoalService {
     Goal update (Goal goal) throws GoalNotFoundException;
     Goal findById (Long id) throws GoalNotFoundException;
     Goal findByTitle (String title) throws GoalNotFoundException;
-    Double calculatePercentage(Double targetSavingsAmount, Double amountSaved);
-    String milestoneMessage(String message, Double targetSavingsAmount, Double amountSaved);
+    Goal findByGoalType (goalType goalType ) throws GoalNotFoundException;
+    String milestoneMessage(Goal goal);
     Iterable<Goal> findAll();
 }
