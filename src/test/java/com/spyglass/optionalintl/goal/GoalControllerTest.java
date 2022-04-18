@@ -4,6 +4,7 @@ import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.model.goalType;
 import com.spyglass.optionalintl.domain.goal.services.GoalService;
 import com.spyglass.optionalintl.domain.user.model.User;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static com.spyglass.optionalintl.BaseControllerTest.asJsonString;
 import static org.hamcrest.core.Is.is;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,7 +69,7 @@ public class GoalControllerTest {
 
     @Test
     @DisplayName("Get/all - success")
-    public void controllerTest01() throws Exception {
+    public void getGoalByTitleTestSuccess() throws Exception {
 
 
         BDDMockito.doReturn(mockGoal1).when(goalService).findById(1L);
@@ -74,6 +79,26 @@ public class GoalControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title", is(mockGoal1.getTitle())));
 
+    }
+
+    @Test
+    @DisplayName("Get /Goal/1 - Not Found")
+    public void getGoalByTitleTestFail() throws Exception {
+        BDDMockito
+    }
+
+    @Test
+    @DisplayName("Create Goal: Success")
+    public void createGoalControllerTest01() throws Exception {
+        BDDMockito.doReturn(mockGoal1).when(goalService).create(any());
+
+        mvc.perform(MockMvcRequestBuilders.post("/goal")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(inputGoal)))
+
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Is.is(mockGoal1.getTitle())));
     }
 
 

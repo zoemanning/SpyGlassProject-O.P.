@@ -57,8 +57,8 @@ public class UserControllerTest {
         SimpleDateFormat dateOfBirth02 = new SimpleDateFormat("MM/DD/YYY");
 
         List<Goal> goals = new ArrayList<>();
-        goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("04/18/1999"), "notes", 17.0, goalType.VACATION_GOAL));
-        goals.add(new Goal("Down payment for house",25000.00,4375.60,dateOfBirth02.parse("07/04/2022"),"notes",17.5,goalType.PERSONAL_GOAL));
+        goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("04/18/1999"), "notes", goalType.VACATION_GOAL));
+        goals.add(new Goal("Down payment for house",25000.00,4375.60,dateOfBirth02.parse("07/04/2022"),"notes",goalType.PERSONAL_GOAL));
 
         inputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
 
