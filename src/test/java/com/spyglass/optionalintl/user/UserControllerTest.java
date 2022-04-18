@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class UserControllerTest {
-//new cHANGE
+    //new cHANGE
     @MockBean
     private UserService userService;
 
@@ -62,11 +62,8 @@ public class UserControllerTest {
 
 
         List<Goal> goals = new ArrayList<>();
-
-        goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("04/18/1999"), "notes", goalType.VACATION_GOAL));
-        goals.add(new Goal("Down payment for house",25000.00,4375.60,dateOfBirth02.parse("07/04/2022"),"notes",goalType.PERSONAL_GOAL));
-
-
+        goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
+        goals.add(new Goal("Down payment for house",25000.00,4375.60,targetDate,"notes",goalType.PERSONAL_GOAL));
 
         inputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
 
@@ -84,8 +81,8 @@ public class UserControllerTest {
         BDDMockito.doReturn(mockUserResponse01).when(userService).create(any());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inputUser)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(inputUser)))
 
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
