@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,8 +55,9 @@ public class GoalControllerTest {
 
     @BeforeEach
     public void setup() throws ParseException {
-        SimpleDateFormat targetDate = new SimpleDateFormat("MM/DD/YYY");
-        targetDate.parse("02/22/2028");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YYY");
+        Date targetDate = formatter.parse("02/22/2028");
+
         user = new User();
         inputGoal = new Goal("Going to Hawaii", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL);
 

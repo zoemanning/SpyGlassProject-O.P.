@@ -86,6 +86,7 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", Is.is("Zoe")));
     }
 
+
     @Test
     @DisplayName("GET / users/1 - Found")
     public void getUserByIdTestSuccess() throws Exception {
@@ -94,7 +95,17 @@ public class UserControllerTest {
         mockMvc.perform(get("/user/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.id", is(1)));
+    }
+
+    @Test
+    @DisplayName("GET / users/1 - Found")
+    public void getUserByFirstNamTestSuccess() throws Exception {
+        BDDMockito.doReturn(mockUserResponse01).when(userService).findById(1L);
+
+        mockMvc.perform(get("/user/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("Zoe")));
     }
 
