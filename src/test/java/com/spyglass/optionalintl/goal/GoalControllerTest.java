@@ -84,7 +84,7 @@ public class GoalControllerTest {
     @Test
     @DisplayName("Get /Goal/1 - Not Found")
     public void getGoalByTitleTestFail() throws Exception {
-        BDDMockito
+
     }
 
     @Test
