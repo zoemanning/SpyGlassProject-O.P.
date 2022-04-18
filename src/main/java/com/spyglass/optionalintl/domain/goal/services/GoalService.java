@@ -12,6 +12,5 @@ public interface GoalService {
     Goal findById (Long id) throws GoalNotFoundException;
     Goal findByTitle (String title) throws GoalNotFoundException;
     Goal findByGoalType (goalType goalType ) throws GoalNotFoundException;
-    String milestoneMessage(Goal goal);
     Iterable<Goal> findAll();
 }

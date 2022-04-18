@@ -1,10 +1,11 @@
-package com.spyglass.optionalintl.goal;
+package com.spyglass.optionalintl.goal.services;
 
 import com.spyglass.optionalintl.domain.goal.exception.GoalNotFoundException;
 import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.model.goalType;
 import com.spyglass.optionalintl.domain.goal.repo.GoalRepo;
 import com.spyglass.optionalintl.domain.goal.services.GoalService;
+import com.spyglass.optionalintl.domain.user.model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,13 +36,15 @@ public class GoalServiceImplTest {
 
     private Goal input;
     private Goal output;
+    private User user;
 
     @BeforeEach
     public void setUp() throws ParseException {
         SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
+        user = new User();
 
-        input = new Goal("Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
-        output = new Goal("Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "note", goalType.VACATION_GOAL);
+        input = new Goal(user,"Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        output = new Goal(user, "Going to Hawaii", 3000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "note", goalType.VACATION_GOAL);
         output.setId(1l);
         output.setTitle("Going to Hawaii");
 
@@ -114,7 +117,7 @@ public class GoalServiceImplTest {
     @DisplayName("Update Goal - Success")
     public void updateGoalTest01() throws GoalNotFoundException, ParseException {
         SimpleDateFormat targetSavingDate01 = new SimpleDateFormat("MM/DD/YYY");
-        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        Goal expectedGoalUpdate = new Goal(user,"Going to Hawaii", 3000.00, 600.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
         expectedGoalUpdate.setId(1L);
         BDDMockito.doReturn(Optional.of(input)).when(goalRepo).findById(1L);
         BDDMockito.doReturn(expectedGoalUpdate).when(goalRepo).save(ArgumentMatchers.any());
@@ -126,13 +129,14 @@ public class GoalServiceImplTest {
     @DisplayName("Goal Service: Update Goal - Fail")
     public void updateGoalTestFail() throws ParseException {
         SimpleDateFormat targetSavingDate01 = new SimpleDateFormat("MM/DD/YYY");
-        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        Goal expectedGoalUpdate = new Goal(user,"Going to Hawaii", 3000.00, 600.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
        expectedGoalUpdate.setId(1L);
        BDDMockito.doReturn(Optional.empty()).when(goalRepo).findById(1L);
        Assertions.assertThrows(GoalNotFoundException.class, ()-> {
            goalService.update(expectedGoalUpdate);
        });
     }
+
 
     @Test
     @DisplayName("Delete Goal")
@@ -177,15 +181,8 @@ public class GoalServiceImplTest {
         Assertions.assertEquals(expected,actual);
     }
 
-    @Test
-    @DisplayName("Calculate progress")
-    public void getMilestoneMessageTest01() throws ParseException {
-        SimpleDateFormat targetSavingDate01 = new SimpleDateFormat("MM/DD/YYY");
-        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 1000.00, 250.00, targetSavingDate01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
-        BDDMockito.doReturn(output).when(goalRepo).save(ArgumentMatchers.any());
-        String expectedMessage = "Congratulations you are 75% away from your goal";
-        String actualMessage = goalService.milestoneMessage(expectedGoalUpdate);
-    }
+
+
 
 }
 
