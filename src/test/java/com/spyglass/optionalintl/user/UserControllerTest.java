@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class UserControllerTest {
-//new cHANGE
+    //new cHANGE
     @MockBean
     private UserService userService;
 
@@ -78,8 +78,8 @@ public class UserControllerTest {
         BDDMockito.doReturn(mockUserResponse01).when(userService).create(any());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inputUser)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(inputUser)))
 
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))

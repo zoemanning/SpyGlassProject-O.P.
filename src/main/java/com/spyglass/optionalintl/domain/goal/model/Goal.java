@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Entity
@@ -18,7 +19,7 @@ public class Goal {
     private String title;
     private Double targetSavingsAmount;
     private Double amountSaved;
-    private SimpleDateFormat savingsDateGoal;
+    private Date savingsDateGoal;
     private String notes;
     private goalType goalType;
     private Double progressPercentage;
@@ -31,7 +32,7 @@ public class Goal {
     }
 
     public Goal(String title, Double targetSavingsAmount, Double amountSaved,
-                SimpleDateFormat savingsDateGoal, String notes, goalType goalType) {
+                Date savingsDateGoal, String notes, goalType goalType) {
 
         this.title = title;
         this.targetSavingsAmount = targetSavingsAmount;
@@ -81,11 +82,11 @@ public class Goal {
         this.amountSaved = amountSaved;
     }
 
-    public SimpleDateFormat getSavingsDateGoal() {
+    public Date getSavingsDateGoal() {
         return savingsDateGoal;
     }
 
-    public void setSavingsDateGoal(SimpleDateFormat savingsDateGoal) {
+    public void setSavingsDateGoal(Date savingsDateGoal) {
         this.savingsDateGoal = savingsDateGoal;
     }
 
