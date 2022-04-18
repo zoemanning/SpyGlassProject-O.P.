@@ -14,11 +14,6 @@ public class Goal {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
-
     private String title;
     private Double targetSavingsAmount;
     private Double amountSaved;
@@ -34,9 +29,9 @@ public class Goal {
     public Goal() {
     }
 
-    public Goal(User user, String title, Double targetSavingsAmount, Double amountSaved,
+    public Goal(String title, Double targetSavingsAmount, Double amountSaved,
                 Date savingsDateGoal, String notes, goalType goalType) {
-        this.user = user;
+
         this.title = title;
         this.targetSavingsAmount = targetSavingsAmount;
         this.amountSaved = amountSaved;
@@ -67,14 +62,6 @@ public class Goal {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Double getTargetSavingsAmount() {
