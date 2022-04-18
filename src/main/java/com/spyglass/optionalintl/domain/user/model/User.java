@@ -3,7 +3,8 @@ package com.spyglass.optionalintl.domain.user.model;
 import com.spyglass.optionalintl.domain.goal.model.Goal;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private SimpleDateFormat dateOfBirth;
+    private Date dateOfBirth;
     private String emailAddress;
     @OneToMany(targetEntity = Goal.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "userId", referencedColumnName = "id")
@@ -26,14 +27,14 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, SimpleDateFormat dateOfBirth, String emailAddress) {
+    public User(String firstName, String lastName, Date dateOfBirth, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.emailAddress = emailAddress;
     }
 
-    public User(Long id, String firstName, String lastName, SimpleDateFormat dateOfBirth, String emailAddress, List<Goal> goalsList) {
+    public User(Long id, String firstName, String lastName, Date dateOfBirth, String emailAddress, List<Goal> goalsList) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,11 +51,11 @@ public class User {
         this.id = id;
     }
 
-    public SimpleDateFormat getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(SimpleDateFormat dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
