@@ -22,7 +22,7 @@ public class GoalController {
         this.goalService = goalService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public ResponseEntity<Iterable<Goal>> getAll() throws GoalNotFoundException {
         Iterable<Goal> all = goalService.findAll();
         return new ResponseEntity<>(all, HttpStatus.OK);

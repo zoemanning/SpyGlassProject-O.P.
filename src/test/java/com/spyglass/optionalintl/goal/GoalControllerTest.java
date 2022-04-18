@@ -5,6 +5,7 @@ import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.model.goalType;
 import com.spyglass.optionalintl.domain.goal.services.GoalService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -28,6 +29,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,7 +45,7 @@ public class GoalControllerTest {
     private MockMvc mvc;
 
     private Goal input;
-    private Goal firstGoal;
+    private Goal output;
 
 
     @MockBean
@@ -52,33 +54,28 @@ public class GoalControllerTest {
 
     @BeforeEach
     public void setup () throws ParseException {
-        List<Goal> goals = new ArrayList<>();
         SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
 
-        goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", 17.0, goalType.VACATION_GOAL));
+        input = new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes",  goalType.VACATION_GOAL);
+        output = new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes",  goalType.VACATION_GOAL);
+        output.setId(1l);
+
+
     }
 
-
-
     @Test
+    @DisplayName("Get/all - success")
     public void controllerTest01 () throws Exception {
-        SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
-        Goal vacation = new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", 17.0, goalType.VACATION_GOAL);
-
-        Iterable<Goal> allGoals = Arrays.asList(vacation);
-
-//        BDDMockito.doReturn(Optional.of(goalService.findAll())).doReturn(allGoals);
-
-        given(goalService.findAll()).willReturn(allGoals);
 
 
-        mvc.perform(get("/" +
-                        "goal/all")
-                .contentType(MediaType.APPLICATION_JSON))
+        BDDMockito.doReturn(output).when(goalService).findById(1l);
+
+        mvc.perform(get("/goal/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$", hasSize(1)))
-                .andExpect((ResultMatcher) jsonPath("$[0].name", is(vacation.getGoalType())));
-
+                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect((ResultMatcher) jsonPath("$.id", is(output.getId())))
+                .andExpect((ResultMatcher) jsonPath("$.allGoals",
+                        is(goalService.findAll())));
 
 
 
