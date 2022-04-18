@@ -62,9 +62,9 @@ public class UserServiceImplTest {
     @Test
     @DisplayName("Find User by Id - Fail")
     public void findUserByIdFail(){
-        BDDMockito.doReturn(Optional.of(outputUser)).when(mockUserRepo).findById(1L);
+        BDDMockito.doReturn(Optional.empty()).when(mockUserRepo).findById(2L);
         Assertions.assertThrows(UserNotFoundException.class, () ->{
-            userService.findById(1L);
+            userService.findById(2L);
         });
     }
 
