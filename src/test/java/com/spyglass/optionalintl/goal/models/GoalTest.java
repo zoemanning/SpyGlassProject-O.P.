@@ -28,10 +28,10 @@ public class GoalTest {
         emptyGoalTwo = new Goal();
 
         SimpleDateFormat savingsDateGoal= new SimpleDateFormat("MM/DD/YYY");
-        goalOne = new Goal(user,"Going to Hawaii", 3000.00, 600.00, savingsDateGoal.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        goalOne = new Goal("Going to Hawaii", 3000.00, 600.00, savingsDateGoal.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
         goalOne.setId(1L);
 
-        goalTwo = new  Goal(user,"Pay Credit Card", 4000.00, 400.00, savingsDateGoal.parse("07/04/2022"), "notes", goalType.PERSONAL_GOAL);
+        goalTwo = new  Goal("Pay Credit Card", 4000.00, 400.00, savingsDateGoal.parse("07/04/2022"), "notes", goalType.PERSONAL_GOAL);
         goalTwo.setId(2L);
 
     }

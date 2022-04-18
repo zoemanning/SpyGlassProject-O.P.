@@ -51,12 +51,12 @@ public class GoalControllerTest {
     public void setup() throws ParseException {
         SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
         user = new User();
-        inputGoal = new Goal(user,"Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        inputGoal = new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
 
 
-        mockGoal1 = new Goal(user,"Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
+        mockGoal1 = new Goal("Going to Hawaii", 3000.00, 520.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.VACATION_GOAL);
         mockGoal1.setId(1L);
-        mockGoal2 = new Goal(user,"Pay Credit Card", 4000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.PERSONAL_GOAL);
+        mockGoal2 = new Goal("Pay Credit Card", 4000.00, 600.00, dateOfBirth01.parse("07/04/2022"), "notes", goalType.PERSONAL_GOAL);
         mockGoal2.setId(2L);
 
 
