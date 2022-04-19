@@ -36,10 +36,9 @@ public class UserServiceImplTest {
 
     @BeforeEach
     public void setUp() throws ParseException {
-//        SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
-        Date dateOfBirth01 = new Date("04/18/1995");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YYY");
+        Date dateOfBirth01 = formatter.parse("04/18/1995");
 
-//        dateOfBirth01.parse("04/18/1995");
         inputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
         outputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
         outputUser.setId(1L);

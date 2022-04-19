@@ -22,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @SpringBootTest
@@ -37,15 +38,16 @@ public class GoalServiceImplTest {
     private Goal input;
     private Goal output;
     private User user;
-    SimpleDateFormat targetSavingsDate = new SimpleDateFormat("MM/DD/YYYY");
+    SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YYYY");
+    Date targetDate;
 
     @BeforeEach
     public void setUp() throws ParseException {
 
-        targetSavingsDate.parse("02/22/2028");
+        targetDate = formatter.parse("02/22/2028");
 
-        input = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingsDate, "notes", goalType.VACATION_GOAL);
-        output = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingsDate, "note", goalType.VACATION_GOAL);
+        input = new Goal("Going to Hawaii", 3000.00, 600.00, targetDate, "notes", goalType.VACATION_GOAL);
+        output = new Goal("Going to Hawaii", 3000.00, 600.00, targetDate, "note", goalType.VACATION_GOAL);
         output.setId(1l);
         output.setTitle("Going to Hawaii");
 
@@ -118,7 +120,7 @@ public class GoalServiceImplTest {
     @DisplayName("Update Goal - Success")
     public void updateGoalTest01() throws GoalNotFoundException, ParseException {
 
-        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingsDate, "notes", goalType.VACATION_GOAL);
+        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetDate, "notes", goalType.VACATION_GOAL);
         expectedGoalUpdate.setId(1L);
         BDDMockito.doReturn(Optional.of(input)).when(goalRepo).findById(1L);
         BDDMockito.doReturn(expectedGoalUpdate).when(goalRepo).save(ArgumentMatchers.any());
@@ -130,7 +132,7 @@ public class GoalServiceImplTest {
     @DisplayName("Goal Service: Update Goal - Fail")
     public void updateGoalTestFail() throws ParseException {
 
-       Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetSavingsDate, "notes", goalType.VACATION_GOAL);
+       Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetDate, "notes", goalType.VACATION_GOAL);
        expectedGoalUpdate.setId(1L);
        BDDMockito.doReturn(Optional.empty()).when(goalRepo).findById(1L);
        Assertions.assertThrows(GoalNotFoundException.class, ()-> {

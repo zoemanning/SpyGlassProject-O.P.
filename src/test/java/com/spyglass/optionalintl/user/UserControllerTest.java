@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class UserControllerTest {
-//new cHANGE
+    //new cHANGE
     @MockBean
     private UserService userService;
 
@@ -80,13 +80,14 @@ public class UserControllerTest {
         BDDMockito.doReturn(mockUserResponse01).when(userService).create(any());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inputUser)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(inputUser)))
 
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", Is.is("Zoe")));
     }
+
 
     @Test
     @DisplayName("GET / users/1 - Found")
@@ -96,7 +97,17 @@ public class UserControllerTest {
         mockMvc.perform(get("/user/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.id", is(1)));
+    }
+
+    @Test
+    @DisplayName("GET / users/1 - Found")
+    public void getUserByFirstNamTestSuccess() throws Exception {
+        BDDMockito.doReturn(mockUserResponse01).when(userService).findById(1L);
+
+        mockMvc.perform(get("/user/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("Zoe")));
     }
 
