@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AccountControllerTest {
 
     @MockBean
-    private AccountService mockAccountService;
+    private AccountService accountService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,11 +42,13 @@ public class AccountControllerTest {
 
     private Account mockResponseAccount2;
 
+    private List<Account> accounts;
+
 
 
     @BeforeEach
     public void setup(){
-        List<Account> accounts = new ArrayList<>();
+        accounts = new ArrayList<>();
         accounts.add(new Account("Zimba"));
         accounts.add(new Account("King"));
         inputAccount = new Account("Test Account", accounts);
@@ -62,12 +64,12 @@ public class AccountControllerTest {
     @Test
     @DisplayName("Get / accounts - found")
     public void getAccountByIdTestSuccess() throws Exception{
-        BDDMockito.doReturn(mockResponseAccount1).when(mockAccountService).findAllAccount();
+        BDDMockito.doReturn(mockResponseAccount1).when(accountService).findById(223L);
 
         mockMvc.perform(get("/account/{id}", 223L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(223L)))
+                .andExpect(jsonPath("$.id", is(223)))
                 .andExpect(jsonPath("$.name", is("Test Account")));
     }
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,8 +24,16 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public Iterable<Account> findAllAccount() {
-        return accountRepo.findAll();
+    public Account findById(Long id) throws AccountNotFoundException {
+        Optional<Account> accountOptional = accountRepo.findById(id);
+        if (accountOptional.isEmpty())
+            throw new AccountNotFoundException("Account not found");
+        return accountOptional.get();
+    }
+
+    @Override
+    public List<Account> findAllAccount() {
+        return (List)accountRepo.findAll();
     }
 
     @Override
