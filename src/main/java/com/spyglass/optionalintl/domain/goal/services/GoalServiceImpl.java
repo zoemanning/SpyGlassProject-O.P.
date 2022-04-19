@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -68,18 +69,31 @@ public class GoalServiceImpl implements GoalService {
     }
 
     @Override
-    public Iterable<Goal> findAll() {
-        return goalRepo.findAll();
+    public List<Goal> findAll() {
+        return (List<Goal>) goalRepo.findAll();
     }
 
     @Override
-    public void delete(Long id) throws GoalNotFoundException {
+    public Boolean delete(Long id) throws GoalNotFoundException {
         Optional<Goal> goalOptional = goalRepo.findById(id);
         if (goalOptional.isEmpty())
             throw new GoalNotFoundException("Goal not found");
         Goal goalToRemove = goalOptional.get();
         goalRepo.delete(goalToRemove);
 
+        return true;
+    }
+
+    @Override
+    public Boolean deleteGoalByTitle (String title) throws GoalNotFoundException {
+        Optional<Goal> goalOptional = goalRepo.findByTitle(title);
+        if (goalOptional.isEmpty())
+            throw new GoalNotFoundException ("Goal does not exist, cannot delete goal");
+
+        Goal goalToDeleteByTitle = goalOptional.get();
+        goalRepo.delete(goalToDeleteByTitle);
+
+        return true;
     }
 
     private static void calculatePercentage(Goal goal) {

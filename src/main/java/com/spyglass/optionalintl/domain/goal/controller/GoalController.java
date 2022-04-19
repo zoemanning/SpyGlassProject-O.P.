@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/goal")
 @Slf4j
@@ -27,16 +29,25 @@ public class GoalController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Iterable<Goal>> getAll() throws GoalNotFoundException {
-        Iterable<Goal> all = goalService.findAll();
-        return new ResponseEntity<>(all, HttpStatus.OK);
+    public ResponseEntity<List<Goal>> getAllGoals() throws GoalNotFoundException {
+        List<Goal> allGoals = goalService.findAll();
+        ResponseEntity<List<Goal>> response = new ResponseEntity<>(allGoals,HttpStatus.OK);
+        return response;
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Goal> requestGoal(@PathVariable Long id) throws GoalNotFoundException {
-        Goal response = goalService.findById(id);
-        log.info(response.toString());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        try {
+            Goal updatedGoal = goalService.findById(id);
+            return new ResponseEntity(updatedGoal, HttpStatus.OK);
+        } catch (GoalNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                            .build();
+        }
+
     }
 
     @PostMapping("")
@@ -45,5 +56,49 @@ public class GoalController {
         return new ResponseEntity<>(goal,HttpStatus.CREATED);
     }
 
+    @PutMapping("")
+    public ResponseEntity<?> updateGoal ( @RequestBody Goal goal){
+        try{
+            Goal updatedGoal = goalService.update(goal);
+            ResponseEntity response = new ResponseEntity(updatedGoal, HttpStatus.OK);
+            return response;
+        } catch (GoalNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteGoalByID (@PathVariable Long id){
+        try {
+            goalService.delete(id);
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .build();
+        }catch (GoalNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+
+        }
+    }
+
+    @DeleteMapping("/title")
+    public ResponseEntity<?> deleteGoalByTitle (@RequestParam(value="title") String title){
+        try {
+            goalService.deleteGoalByTitle(title);
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .build();
+        }catch (GoalNotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
+    }
 
 }
+
+
+

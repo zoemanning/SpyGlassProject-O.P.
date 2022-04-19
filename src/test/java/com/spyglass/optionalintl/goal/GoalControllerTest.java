@@ -1,10 +1,13 @@
 package com.spyglass.optionalintl.goal;
 
+import com.spyglass.optionalintl.domain.goal.exception.GoalNotFoundException;
 import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.model.goalType;
 import com.spyglass.optionalintl.domain.goal.services.GoalService;
+import com.spyglass.optionalintl.domain.user.exception.UserNotFoundException;
 import com.spyglass.optionalintl.domain.user.model.User;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +34,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -87,11 +93,14 @@ public class GoalControllerTest {
     @Test
     @DisplayName("Get /Goal/1 - Not Found")
     public void getGoalByTitleTestFail() throws Exception {
+        BDDMockito.doThrow(new GoalNotFoundException("Goal Not Found")).when(goalService).findById(1L);
+        mvc.perform(get("/goal/{id}", 1L))
+                .andExpect(status().isNotFound());
 
     }
 
     @Test
-    @DisplayName("Create Goal: Success")
+    @DisplayName("POST: Create Goal: Success")
     public void createGoalControllerTest01() throws Exception {
         BDDMockito.doReturn(mockGoal1).when(goalService).create(any());
 
@@ -102,6 +111,63 @@ public class GoalControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title", Is.is(mockGoal1.getTitle())));
+    }
+
+    @Test
+    @DisplayName("PUT /Goals/1 - Success")
+    public void putWidgetTestNotSuccess() throws Exception{
+        List<Goal> goals = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YYY");
+        Date targetDate = formatter.parse("02/22/2029");
+        goals.add( new Goal("Going to Brazil", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
+        goals.add( new Goal("Going to San Juan", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
+        Goal expectedGoalUpdate = (new Goal("Going to Brazil", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
+        expectedGoalUpdate.setId(1L);
+        BDDMockito.doReturn(expectedGoalUpdate).when(goalService).update(new Goal("Going to Brazil", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
+        mvc.perform(put("/goal/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(inputGoal)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1L)))
+                .andExpect(jsonPath("$.title", is("Going to Brazil")));
+    }
+
+
+    @Test
+    @DisplayName("DELETE /Goal/1 - Success")
+    public void deleteUserTestNotSuccess() throws Exception{
+        BDDMockito.doReturn(true).when(goalService).delete(any());
+        mvc.perform(delete("/goal/{id}", 1))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /Goal/1 - Not Found")
+    public void deleteUserTestNotFound() throws Exception{
+        BDDMockito.doThrow(new GoalNotFoundException("Not Found")).when(goalService).delete(any());
+        mvc.perform(delete("/goal/{id}", 1L))
+                .andExpect(status().isNotFound());
+    }
+
+
+
+
+
+    @Test
+    @DisplayName("DELETE /Goal by Title/ - Success")
+    public void deleteGoalTestNotSuccess() throws Exception{
+        BDDMockito.doReturn(true).when(goalService).deleteGoalByTitle("Going to Hawaii");
+        mvc.perform(delete("/goal/{title}", "Going to Hawaii"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /Goal by Title/ - Not Found")
+    public void deletePersonTestNotFound() throws Exception{
+        BDDMockito.doThrow(new GoalNotFoundException("Not Found")).when(goalService).deleteGoalByTitle("Going to Hawaii");
+        mvc.perform((delete("/goal/{title}", "Going to Hawaii")))
+                .andExpect(status().isNotFound());
     }
 
 
