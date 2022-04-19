@@ -1,7 +1,6 @@
-package com.spyglass.optionalintl.domain.accountmanager.model;
+package com.spyglass.optionalintl.domain.account.model;
 
 import javax.persistence.*;
-
 
 @Entity
 public class Account {

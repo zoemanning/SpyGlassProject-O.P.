@@ -1,4 +1,4 @@
-package com.spyglass.optionalintl.domain.accountmanager.exception;
+package com.spyglass.optionalintl.domain.account.exception;
 
 public class AccountNotFoundException extends Exception {
     public AccountNotFoundException(String msg) {
