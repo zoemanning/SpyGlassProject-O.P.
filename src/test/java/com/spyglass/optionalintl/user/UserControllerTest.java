@@ -59,8 +59,10 @@ public class UserControllerTest {
         Date targetDate = formatter.parse("02/22/2028");
 
         List<Goal> goals = new ArrayList<>();
+
         goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
         goals.add(new Goal("Down payment for house",25000.00,4375.60,targetDate,"notes",goalType.PERSONAL_GOAL));
+
 
         inputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
 
