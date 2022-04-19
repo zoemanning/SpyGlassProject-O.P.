@@ -20,8 +20,12 @@ public class UserTest {
         noUser = new User();
         noUserTwo = new User();
 
-        SimpleDateFormat savingsDateGoal = new SimpleDateFormat("MM/DD/YYYY");
-//        userOne = new User("Zoe", "Manning", savingsDateGoal.parse("06/14/2023"), "zoe@gmail.com");
+        SimpleDateFormat dateOfBirth = new SimpleDateFormat("MM/DD/YYYY");
+        dateOfBirth.parse("02/22/2023");
+
+//        userOne = new User("Dj", "Cottingham", dateOfBirth, "optionalintelligence@gmail.com");
+
+
         userOne.setId(1L);
 
 //        userTwo = new User("DJ", "Cottingham", )

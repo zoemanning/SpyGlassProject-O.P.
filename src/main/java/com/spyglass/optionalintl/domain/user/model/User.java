@@ -23,7 +23,6 @@ public class User {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private List<Goal> goalsList;
 
-
     public User() {
     }
 
