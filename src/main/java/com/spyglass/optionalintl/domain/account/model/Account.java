@@ -2,19 +2,36 @@ package com.spyglass.optionalintl.domain.account.model;
 
 import javax.persistence.*;
 
+import java.util.Date;
+import java.util.List;
+
+
 @Entity
 public class Account {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
-    private Integer accountNumber;
+    private Long accountNumber;
     private String description;
     private String name;
+    
+    private String eMail;
 
     public Account() {
     }
+
+    public Account(List<Account> accounts, Date parse) {
+    }
+
+    public Account(String name) {
+    }
+
+    public Account(String test_account, List<Account> accounts) {
+    }
+
     public Long getId() {
         return id;
     }
@@ -23,11 +40,11 @@ public class Account {
         this.id = id;
     }
 
-    public Integer getAccountNumber() {
+    public Long getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(Integer accountNumber) {
+    public void setAccountNumber(Long accountNumber) {
         this.accountNumber = accountNumber;
     }
 
@@ -47,6 +64,14 @@ public class Account {
         this.name = name;
     }
 
+    public String getEMail() {
+        return eMail;
+    }
+
+    public void setEMail(String eMail) {
+        this.eMail = eMail;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
@@ -54,6 +79,7 @@ public class Account {
                 ", accountNumber=" + accountNumber +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
+                ", eMail='" + eMail + '\'' +
                 '}';
     }
 }
