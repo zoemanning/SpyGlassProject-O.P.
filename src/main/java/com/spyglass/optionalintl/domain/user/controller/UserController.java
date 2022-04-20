@@ -2,7 +2,6 @@ package com.spyglass.optionalintl.domain.user.controller;
 
 import com.spyglass.optionalintl.domain.user.exception.UserNotFoundException;
 import com.spyglass.optionalintl.domain.user.model.User;
-import com.spyglass.optionalintl.domain.user.repo.UserRepo;
 import com.spyglass.optionalintl.domain.user.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
