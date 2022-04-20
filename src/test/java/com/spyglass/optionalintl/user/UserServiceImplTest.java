@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @SpringBootTest
@@ -35,8 +36,9 @@ public class UserServiceImplTest {
 
     @BeforeEach
     public void setUp() throws ParseException {
-        SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
-        dateOfBirth01.parse("04/18/1995");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YYY");
+        Date dateOfBirth01 = formatter.parse("04/18/1995");
+
         inputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
         outputUser = new User("Zoe", "Manning", dateOfBirth01, "zoe@gmail.com");
         outputUser.setId(1L);

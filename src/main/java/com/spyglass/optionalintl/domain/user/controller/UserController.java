@@ -35,7 +35,7 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllWidgets() throws UserNotFoundException {
-        Iterable<User> widgets = userService.findAll();
+        List<User> widgets = userService.findAll();
         ResponseEntity<List<User>> response = new ResponseEntity(widgets, HttpStatus.OK);
         return response;
     }

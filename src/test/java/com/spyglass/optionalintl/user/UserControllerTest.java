@@ -1,6 +1,5 @@
 package com.spyglass.optionalintl.user;
 
-
 import com.spyglass.optionalintl.domain.goal.model.Goal;
 import com.spyglass.optionalintl.domain.goal.model.goalType;
 import com.spyglass.optionalintl.domain.user.exception.UserNotFoundException;
@@ -40,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class UserControllerTest {
-
+    //new cHANGE
     @MockBean
     private UserService userService;
 
@@ -54,12 +53,10 @@ public class UserControllerTest {
     @BeforeEach
     public void setUp() throws ParseException {
 
-        SimpleDateFormat dateOfBirth01 = new SimpleDateFormat("MM/DD/YYY");
-        dateOfBirth01.parse("04/18/1995");
-        SimpleDateFormat dateOfBirth02 = new SimpleDateFormat("MM/DD/YYY");
-        SimpleDateFormat targetDate = new SimpleDateFormat("MM/DD/YYY");
-        targetDate.parse("02/22/2028");
-
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YYYY");
+        Date dateOfBirth01 = formatter.parse("04/18/1995");
+        Date dateOfBirth02 = formatter.parse("01/07/2000");
+        Date targetDate = formatter.parse("02/22/2028");
 
         List<Goal> goals = new ArrayList<>();
         goals.add(new Goal("Going to Hawaii", 3000.00, 520.00, targetDate, "notes", goalType.VACATION_GOAL));
@@ -81,13 +78,14 @@ public class UserControllerTest {
         BDDMockito.doReturn(mockUserResponse01).when(userService).create(any());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inputUser)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(inputUser)))
 
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", Is.is("Zoe")));
     }
+
 
     @Test
     @DisplayName("GET / users/1 - Found")
@@ -97,7 +95,17 @@ public class UserControllerTest {
         mockMvc.perform(get("/user/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.id", is(1)));
+    }
+
+    @Test
+    @DisplayName("GET / users/1 - Found")
+    public void getUserByFirstNamTestSuccess() throws Exception {
+        BDDMockito.doReturn(mockUserResponse01).when(userService).findById(1L);
+
+        mockMvc.perform(get("/user/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.firstName", is("Zoe")));
     }
 
