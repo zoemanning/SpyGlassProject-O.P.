@@ -125,7 +125,7 @@ public class GoalServiceImplTest {
     @DisplayName("Update Goal - Success")
     public void updateGoalTest01() throws GoalNotFoundException, ParseException {
 
-        Goal expectedGoalUpdate = new Goal("Going to Hawaii", 3000.00, 600.00, targetDate, "notes", goalType.VACATION_GOAL);
+        Goal expectedGoalUpdate = new Goal("Going to France", 3000.00, 600.00, targetDate, "notes", goalType.VACATION_GOAL);
         expectedGoalUpdate.setId(1L);
         BDDMockito.doReturn(Optional.of(mockGoal1)).when(goalRepo).findById(1L);
         BDDMockito.doReturn(expectedGoalUpdate).when(goalRepo).save(ArgumentMatchers.any());
@@ -164,23 +164,7 @@ public class GoalServiceImplTest {
     }
 
 
-    @Test
-    @DisplayName("Goal Service: Delete Goal by Title - Success")
-    public void deleteGoalTestByTitle01() throws GoalNotFoundException {
-        BDDMockito.doReturn(Optional.of(mockGoal2)).when(goalRepo).findByTitle("Going to London");
-        Boolean actualResponse = goalService.deleteGoalByTitle("Going to London");
-        Assertions.assertTrue(actualResponse);
 
-    }
-
-    @Test
-    @DisplayName("Goal Service: Delete Goal - Fail")
-    public void deleteGoalTestByTitleFail01(){
-        BDDMockito.doReturn(Optional.empty()).when(goalRepo).findByTitle("Going to London");
-        Assertions.assertThrows(GoalNotFoundException.class, ()-> {
-            goalService.deleteGoalByTitle("Going to London");
-        });
-    }
 
     @Test
     @DisplayName("Calculate Progress Test - Success")

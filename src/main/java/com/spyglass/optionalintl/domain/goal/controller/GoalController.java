@@ -84,19 +84,6 @@ public class GoalController {
         }
     }
 
-    @DeleteMapping("/title")
-    public ResponseEntity<?> deleteGoalByTitle (@RequestParam(value="title") String title){
-        try {
-            goalService.deleteGoalByTitle(title);
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .build();
-        }catch (GoalNotFoundException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
-        }
-    }
 
 }
 

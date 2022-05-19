@@ -59,14 +59,15 @@ public class GoalServiceImpl implements GoalService {
     @Override
     public Goal update(Goal goal) throws GoalNotFoundException {
         Long id = goal.getId();
+        calculatePercentage(goal);
+        milestoneMessage(goal);
         Optional<Goal> goalExistOption = goalRepo.findById(id);
-        if (goalExistOption.isEmpty()) {
-            throw new GoalNotFoundException("Goal not found");}
-        Goal updatedGoal = goalExistOption.get();
-        calculatePercentage(updatedGoal);
-        milestoneMessage(updatedGoal);
-        return goalRepo.save(goal);
-    }
+        if (goalExistOption.isEmpty())
+            throw new GoalNotFoundException("Goal not found");
+            return goalRepo.save(goal);
+        }
+
+
 
     @Override
     public List<Goal> findAll() {
@@ -84,17 +85,7 @@ public class GoalServiceImpl implements GoalService {
         return true;
     }
 
-    @Override
-    public Boolean deleteGoalByTitle (String title) throws GoalNotFoundException {
-        Optional<Goal> goalOptional = goalRepo.findByTitle(title);
-        if (goalOptional.isEmpty())
-            throw new GoalNotFoundException ("Goal does not exist, cannot delete goal");
 
-        Goal goalToDeleteByTitle = goalOptional.get();
-        goalRepo.delete(goalToDeleteByTitle);
-
-        return true;
-    }
 
     private static void calculatePercentage(Goal goal) {
         Double amountSaved = goal.getAmountSaved();
